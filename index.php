@@ -2,7 +2,7 @@
 include 'db.php'; 
 $queryFilieres = $pdo->query("SELECT * FROM filieres");
 $filieres = $queryFilieres->fetchAll();
-$queryEtudiants = $pdo->query("SELECT etudiants.nom, etudiants.prenom, filieres.nom AS nom_filiere 
+$queryEtudiants = $pdo->query("SELECT etudiants.id, etudiants.nom, etudiants.prenom, filieres.nom AS nom_filiere 
                                 FROM etudiants 
                                 JOIN filieres ON etudiants.filiere_id = filieres.id");
 $etudiants = $queryEtudiants->fetchAll();
@@ -41,6 +41,7 @@ $etudiants = $queryEtudiants->fetchAll();
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Filière</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -49,6 +50,11 @@ $etudiants = $queryEtudiants->fetchAll();
                     <td><?= htmlspecialchars($e['nom']) ?></td>
                     <td><?= htmlspecialchars($e['prenom']) ?></td>
                     <td><?= htmlspecialchars($e['nom_filiere']) ?></td>
+                    <td>
+                        <!-- Liens vers les actions -->
+                        <a href="update.php?id=<?= $e['id'] ?>">Modifier</a>
+                        <a href="delete.php?id=<?= $e['id'] ?>" onclick="return confirm('Supprimer cet étudiant ?')">Supprimer</a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
