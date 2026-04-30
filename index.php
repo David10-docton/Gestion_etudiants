@@ -1,7 +1,11 @@
 <?php 
-include 'connexion.php'; 
-$query = $pdo->query("SELECT * FROM filieres");
-$filieres = $query->fetchAll();
+include 'db.php'; 
+$queryFilieres = $pdo->query("SELECT * FROM filieres");
+$filieres = $queryFilieres->fetchAll();
+$queryEtudiants = $pdo->query("SELECT etudiants.nom, etudiants.prenom, filieres.nom AS nom_filiere 
+                                FROM etudiants 
+                                JOIN filieres ON etudiants.filiere_id = filieres.id");
+$etudiants = $queryEtudiants->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +31,29 @@ $filieres = $query->fetchAll();
         
         <button type="submit">Enregistrer</button>
     </form>
+
+    <hr>
+
+    <h2>Liste des Étudiants</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Filière</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($etudiants as $e): ?>
+                <tr>
+                    <td><?= htmlspecialchars($e['nom']) ?></td>
+                    <td><?= htmlspecialchars($e['prenom']) ?></td>
+                    <td><?= htmlspecialchars($e['nom_filiere']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
     <script src="assets/js/script.js"></script>
 </body>
 </html>
